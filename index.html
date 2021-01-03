@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <canvas id = "myCanvas" width = "300" height = "200"></canvas>
+        <script>
+            var canvas = document.getElementById('myCanvas');
+            var context = canvas.getContext('2d');
+            var radius = canvas.height / 2;
+            context.translate(radius, radius);
+            radius = radius * 0.90
+            function clock() {
+                context.clearRect(-100, -100, 500, 500);
+                context.beginPath();
+                context.arc(0, 0, radius, 0, 2*Math.PI);
+                context.strokeStyle = "black";
+                context.lineWidth = 2;
+                context.stroke();
+
+                context.beginPath();
+                context.arc(0, 0, 2, 0, 2*Math.PI);
+                context.stroke();
+
+                c_point();
+                setTimeout('clock()', 1000);
+            }
+            
+           function c_point() {
+                var now = new Date();
+                hour = now.getHours();
+                min = now.getMinutes();
+                sec = now.getSeconds();
+                
+                hour = hour % 12;
+                hour = (hour*Math.PI/6)+(min*Math.PI/(6*60))+(sec*Math.PI/(360*60));
+                context.beginPath();
+                context.moveTo(0, 0);
+                context.rotate(hour);
+                context.lineTo(0, -radius*0.7);
+                context.stroke();
+                context.rotate(-hour);
+
+                min = (min*Math.PI/30)+(sec*Math.PI/(30*60));
+                context.beginPath();
+                context.moveTo(0, 0);
+                context.rotate(min);
+                context.lineTo(0, -radius);
+                context.stroke();
+                context.rotate(-min);
+
+                sec = (sec*Math.PI/30);
+                context.beginPath();
+                context.moveTo(0, 0);
+                context.strokeStyle = "red";
+                context.lineWidth = 1;
+                context.rotate(sec);
+                context.lineTo(0, -radius);
+                context.stroke();
+                context.rotate(-sec);
+           }
+           
+           clock();
+        </script>
+    </body>
+</html>
